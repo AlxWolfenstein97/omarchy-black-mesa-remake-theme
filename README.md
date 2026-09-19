@@ -1,31 +1,27 @@
-# Blλck Mesa — Omarchy theme
+# HEV Suit — Omarchy theme
 
 Incident report, unclassified: Freeman never clocked in for the usual Tuesday.
 Somewhere between the tram ride and the HEV bay he found a compositor called
 **Hyprland**, an opinionated Arch called **Omarchy**, and a terminal that
-answered in lambda orange. The resonance cascade still happened — of course it
+answered in hazard orange. The resonance cascade still happened — of course it
 did — but the desktop held. Facility black. Blueprint cyan on the monitors.
-Active Hypr borders run a 45° **lambda-orange → blueprint-cyan** gradient
+Active Hypr borders run a 45° **HEV-orange → blueprint-cyan** gradient
 (same dual-accent trick as the asphalt night pack). Same story, better rice.
 
-Hazard-facility theme for [Omarchy](https://omarchy.org/). Inspired by the look
-of *Black Mesa* / *Half-Life* — **not affiliated with Valve or Crowbar
-Collective** (see [Credits](#credits--legal-ish) below).
+Orange-suit theme for [Omarchy](https://omarchy.org/). Inspired by the look of
+*Black Mesa* / *Half-Life* — **not affiliated with Valve or Crowbar Collective**
+(see [Credits](#credits--legal-ish) below).
 
 Adjacent, different vibe:
 [Shiver-dev01/omarchy-black-mesa-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-theme)
-is also named Black Mesa, but it’s an **amber phosphor CRT** take (single
-facility-amber accent, scanline wallpapers). This pack is the *game* —
-HEV orange, blueprint cyan, Steam art, corridor zombies and all. Same
-building, different wing.
+is an **amber phosphor CRT** “Black Mesa” take (single facility-amber accent,
+scanline wallpapers). This pack is the *game* — HEV orange, blueprint cyan,
+Steam art, corridor zombies and all. Same building, different wing.
 
-Omarchy derives the install folder from the repo name
-(`omarchy-…-theme` → slug, ASCII only — no λ in the path). Both packs used to
-collapse to `black-mesa`, and `theme install` **deletes** whatever’s already
-in that folder before cloning. So this one ships as **Black Mesa Lambda**
-(`omarchy-black-mesa-lambda-theme` → `black-mesa-lambda`) — unique slug, λ
-kept in the wordmark / README where it belongs — so the CRT pack and this pack
-can coexist.
+Omarchy derives the install folder from the repo name (`omarchy-…-theme` →
+slug). A plain `black-mesa` slug would collide with that CRT pack — `theme
+install` **deletes** the existing folder first — so this one ships as **HEV
+Suit** (`omarchy-hev-suit-theme` → `hev-suit`) and they can coexist.
 
 <p align="center">
   <img src="logo.png" alt="Black Mesa wordmark used for unlock / README" width="520" />
@@ -38,10 +34,10 @@ can coexist.
 ## Install
 
 ```bash
-omarchy theme install https://github.com/AlxWolfenstein97/omarchy-black-mesa-lambda-theme.git
+omarchy theme install https://github.com/AlxWolfenstein97/omarchy-hev-suit-theme.git
 # optional — About + screensaver ASCII for this theme (skippable; see Branding)
-cp ~/.config/omarchy/themes/black-mesa-lambda/about.txt ~/.config/omarchy/branding/about.txt
-cp ~/.config/omarchy/themes/black-mesa-lambda/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
+cp ~/.config/omarchy/themes/hev-suit/about.txt ~/.config/omarchy/branding/about.txt
+cp ~/.config/omarchy/themes/hev-suit/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
 
 That clones **and** applies the theme (`omarchy-theme-set` runs inside
@@ -51,20 +47,20 @@ set skips the first wallpaper and just wastes a switch.
 Or clone into place (then you *do* need an explicit set):
 
 ```bash
-git clone https://github.com/AlxWolfenstein97/omarchy-black-mesa-lambda-theme.git ~/.config/omarchy/themes/black-mesa-lambda
-omarchy theme set "Black Mesa Lambda"
+git clone https://github.com/AlxWolfenstein97/omarchy-hev-suit-theme.git ~/.config/omarchy/themes/hev-suit
+omarchy theme set "HEV Suit"
 # optional branding — same as above
-cp ~/.config/omarchy/themes/black-mesa-lambda/about.txt ~/.config/omarchy/branding/about.txt
-cp ~/.config/omarchy/themes/black-mesa-lambda/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
+cp ~/.config/omarchy/themes/hev-suit/about.txt ~/.config/omarchy/branding/about.txt
+cp ~/.config/omarchy/themes/hev-suit/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
 
 Already installed and just switching back later:
 
 ```bash
-omarchy theme set "Black Mesa Lambda"
+omarchy theme set "HEV Suit"
 # optional — re-apply this theme’s About / screensaver marks
-cp ~/.config/omarchy/themes/black-mesa-lambda/about.txt ~/.config/omarchy/branding/about.txt
-cp ~/.config/omarchy/themes/black-mesa-lambda/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
+cp ~/.config/omarchy/themes/hev-suit/about.txt ~/.config/omarchy/branding/about.txt
+cp ~/.config/omarchy/themes/hev-suit/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
 
 Cycle wallpapers with `omarchy theme bg next`.
