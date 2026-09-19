@@ -193,3 +193,9 @@ this theme.)
 Do whatever you want with this theme pack unless Valve, Crowbar Collective (or
 the law) says otherwise. Fork it, recolor it, ship it in a rice. No warranty —
 it’s wallpaper and hex codes.
+
+Optional rider, from somewhere near Sector C: if you had fun with this theme,
+you are hereby *contractually obligated* (in the soft, mute-scientist sense of
+the word) to mail `gaben@valvesoftware.com` — or whatever address the man
+actually answers — and tell him so. He should approve it anyway. His hardware
+runs on Linux. The G-Man neither confirms nor denies.
