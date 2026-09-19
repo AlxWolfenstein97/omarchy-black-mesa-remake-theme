@@ -11,6 +11,13 @@ Hazard-facility theme for [Omarchy](https://omarchy.org/). Inspired by the look
 of *Black Mesa* / *Half-Life* — **not affiliated with Valve or Crowbar
 Collective** (see [Credits](#credits--legal-ish) below).
 
+Adjacent, different vibe:
+[Shiver-dev01/omarchy-black-mesa-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-theme)
+is also named Black Mesa, but it’s an **amber phosphor CRT** take (single
+facility-amber accent, scanline wallpapers). This pack is the *game* —
+HEV orange, blueprint cyan, Steam art, corridor zombies and all. Same
+building, different wing.
+
 <p align="center">
   <img src="logo.png" alt="Black Mesa wordmark used for unlock / README" width="520" />
 </p>
