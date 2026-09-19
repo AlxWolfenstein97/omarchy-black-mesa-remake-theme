@@ -1,0 +1,35 @@
+mode = "dark"
+
+# Hazard pack — lambda orange + blueprint cyan on facility black
+accent = "#E37226"
+selection = "#2A180C"
+muted = "#5A4E42"
+
+background = "#0B0908"
+dark_background = "#070605"
+darker_background = "#040302"
+lighter_background = "#1A1612"
+
+foreground = "#F2EDE6"
+dark_foreground = "#7A6E62"
+light_foreground = "#D4C8BA"
+bright_foreground = "#FFFFFF"
+
+hyprland_active_border = "rgba(E37226ee) rgba(00C8E8ee) 45deg"
+hyprland_inactive_border = "rgba(2A180Caa)"
+
+red = "#E6352B"
+yellow = "#FFB000"
+orange = "#E37226"
+green = "#6BAA3A"
+cyan = "#00C8E8"
+blue = "#3A6A9A"
+magenta = "#C45A3A"
+brown = "#6B3A1A"
+
+bright_red = "#FF665A"
+bright_yellow = "#FFD040"
+bright_green = "#8ACC5A"
+bright_cyan = "#66E0F5"
+bright_blue = "#5A8ABA"
+bright_magenta = "#E08060"
