@@ -24,7 +24,6 @@ Collective** (see [Credits](#credits--legal-ish) below).
 ```bash
 omarchy theme install https://github.com/AlxWolfenstein97/omarchy-black-mesa-theme.git
 # optional — About + screensaver ASCII for this theme (skippable; see Branding)
-mkdir -p ~/.config/omarchy/branding
 cp ~/.config/omarchy/themes/black-mesa/about.txt ~/.config/omarchy/branding/about.txt
 cp ~/.config/omarchy/themes/black-mesa/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
@@ -39,7 +38,6 @@ Or clone into place (then you *do* need an explicit set):
 git clone https://github.com/AlxWolfenstein97/omarchy-black-mesa-theme.git ~/.config/omarchy/themes/black-mesa
 omarchy theme set "Black Mesa"
 # optional branding — same as above
-mkdir -p ~/.config/omarchy/branding
 cp ~/.config/omarchy/themes/black-mesa/about.txt ~/.config/omarchy/branding/about.txt
 cp ~/.config/omarchy/themes/black-mesa/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
