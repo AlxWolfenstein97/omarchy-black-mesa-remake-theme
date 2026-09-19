@@ -12,7 +12,7 @@ of *Black Mesa* / *Half-Life* — **not affiliated with Valve or Crowbar
 Collective** (see [Credits](#credits--legal-ish) below).
 
 Adjacent, different vibe:
-[Shiver-dev01/omarchy-black-mesa-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-theme)
+[Shiver-dev01/omarchy-black-mesa-remake-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-remake-theme)
 is also named Black Mesa, but it’s an **amber phosphor CRT** take (single
 facility-amber accent, scanline wallpapers). This pack is the *game* —
 HEV orange, blueprint cyan, Steam art, corridor zombies and all. Same
@@ -29,10 +29,10 @@ building, different wing.
 ## Install
 
 ```bash
-omarchy theme install https://github.com/AlxWolfenstein97/omarchy-black-mesa-theme.git
+omarchy theme install https://github.com/AlxWolfenstein97/omarchy-black-mesa-remake-theme.git
 # optional — About + screensaver ASCII for this theme (skippable; see Branding)
-cp ~/.config/omarchy/themes/black-mesa/about.txt ~/.config/omarchy/branding/about.txt
-cp ~/.config/omarchy/themes/black-mesa/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
+cp ~/.config/omarchy/themes/black-mesa-remake/about.txt ~/.config/omarchy/branding/about.txt
+cp ~/.config/omarchy/themes/black-mesa-remake/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
 
 That clones **and** applies the theme (`omarchy-theme-set` runs inside
@@ -42,20 +42,20 @@ set skips the first wallpaper and just wastes a switch.
 Or clone into place (then you *do* need an explicit set):
 
 ```bash
-git clone https://github.com/AlxWolfenstein97/omarchy-black-mesa-theme.git ~/.config/omarchy/themes/black-mesa
-omarchy theme set "Black Mesa"
+git clone https://github.com/AlxWolfenstein97/omarchy-black-mesa-remake-theme.git ~/.config/omarchy/themes/black-mesa
+omarchy theme set "Black Mesa Remake"
 # optional branding — same as above
-cp ~/.config/omarchy/themes/black-mesa/about.txt ~/.config/omarchy/branding/about.txt
-cp ~/.config/omarchy/themes/black-mesa/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
+cp ~/.config/omarchy/themes/black-mesa-remake/about.txt ~/.config/omarchy/branding/about.txt
+cp ~/.config/omarchy/themes/black-mesa-remake/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
 
 Already installed and just switching back later:
 
 ```bash
-omarchy theme set "Black Mesa"
+omarchy theme set "Black Mesa Remake"
 # optional — re-apply this theme’s About / screensaver marks
-cp ~/.config/omarchy/themes/black-mesa/about.txt ~/.config/omarchy/branding/about.txt
-cp ~/.config/omarchy/themes/black-mesa/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
+cp ~/.config/omarchy/themes/black-mesa-remake/about.txt ~/.config/omarchy/branding/about.txt
+cp ~/.config/omarchy/themes/black-mesa-remake/screensaver.txt ~/.config/omarchy/branding/screensaver.txt
 ```
 
 Cycle wallpapers with `omarchy theme bg next`.
