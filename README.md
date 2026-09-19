@@ -1,4 +1,4 @@
-# Black Mesa — Omarchy theme
+# Black Mesa Remake — Omarchy theme
 
 Incident report, unclassified: Freeman never clocked in for the usual Tuesday.
 Somewhere between the tram ride and the HEV bay he found a compositor called
@@ -12,11 +12,18 @@ of *Black Mesa* / *Half-Life* — **not affiliated with Valve or Crowbar
 Collective** (see [Credits](#credits--legal-ish) below).
 
 Adjacent, different vibe:
-[Shiver-dev01/omarchy-black-mesa-remake-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-remake-theme)
+[Shiver-dev01/omarchy-black-mesa-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-theme)
 is also named Black Mesa, but it’s an **amber phosphor CRT** take (single
 facility-amber accent, scanline wallpapers). This pack is the *game* —
 HEV orange, blueprint cyan, Steam art, corridor zombies and all. Same
 building, different wing.
+
+Omarchy derives the install folder from the repo name
+(`omarchy-…-theme` → slug). Both packs used to collapse to `black-mesa`, and
+`theme install` **deletes** whatever’s already in that folder before cloning.
+So this one ships as **Black Mesa Remake**
+(`omarchy-black-mesa-remake-theme` → `black-mesa-remake`) so the CRT pack and
+this pack can coexist.
 
 <p align="center">
   <img src="logo.png" alt="Black Mesa wordmark used for unlock / README" width="520" />
@@ -42,7 +49,7 @@ set skips the first wallpaper and just wastes a switch.
 Or clone into place (then you *do* need an explicit set):
 
 ```bash
-git clone https://github.com/AlxWolfenstein97/omarchy-black-mesa-remake-theme.git ~/.config/omarchy/themes/black-mesa
+git clone https://github.com/AlxWolfenstein97/omarchy-black-mesa-remake-theme.git ~/.config/omarchy/themes/black-mesa-remake
 omarchy theme set "Black Mesa Remake"
 # optional branding — same as above
 cp ~/.config/omarchy/themes/black-mesa-remake/about.txt ~/.config/omarchy/branding/about.txt
