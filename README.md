@@ -75,7 +75,7 @@ Cycle wallpapers with `omarchy theme bg next`.
 |-------|------|
 | `colors.toml` | Palette (the real theme) |
 | `backgrounds/` | Wallpapers |
-| `sounds/` | Four GothLady HEV cues — optional wiring, see [How HEV system sounds work](#how-hev-system-sounds-work) |
+| `sounds/` | Four GothLady HEV cues — optional wiring via `install-sounds.sh` / `uninstall-sounds.sh` (see [How HEV system sounds work](#how-hev-system-sounds-work)) |
 | `unlock.png` / `preview-unlock.png` | Plymouth unlock + picker mockup |
 | `preview.png` | Theme switcher preview |
 | `icon.txt` / `logo.txt` (+ `about.txt` / `screensaver.txt`) | About & screensaver **ASCII** branding |
@@ -167,115 +167,40 @@ and nowhere near the clipped in-game original HEV blast.
 
 The dispatcher (`~/.local/bin/omarchy-sound`) is theme-agnostic: switch away
 from Hev Suit and the same hooks become no-ops (missing file → exit 0). Switch
-back and the cues return. Nothing to unpick.
+back and the cues return. To tear the wiring down entirely (not just go quiet),
+use `uninstall-sounds.sh` below.
 
-### Wire it once
+### Wire it once / wire it down
 
-**1. Dispatcher**
-
-```bash
-mkdir -p ~/.local/bin
-cat > ~/.local/bin/omarchy-sound <<'EOF'
-#!/bin/bash
-# omarchy-sound <name> [freedesktop-fallback]
-NAME=$1; FALLBACK=$2
-[[ -n $NAME ]] || exit 0
-THEME_SOUND="$HOME/.local/state/omarchy/current/theme/sounds/$NAME.ogg"
-FALLBACK_SOUND="/usr/share/sounds/freedesktop/stereo/$FALLBACK.oga"
-if [[ -f $THEME_SOUND ]]; then SOUND=$THEME_SOUND
-elif [[ -n $FALLBACK && -f $FALLBACK_SOUND ]]; then SOUND=$FALLBACK_SOUND
-else exit 0; fi
-setsid paplay "$SOUND" >/dev/null 2>&1 &
-exit 0
-EOF
-chmod +x ~/.local/bin/omarchy-sound
-```
-
-**2. Hooks**
+From this theme directory (after `theme install` / clone):
 
 ```bash
-mkdir -p ~/.config/omarchy/hooks/{post-boot,battery-low,post-update}.d
-printf '%s\n' '#!/bin/bash' 'omarchy-sound login' \
-  > ~/.config/omarchy/hooks/post-boot.d/hev-sound.hook
-printf '%s\n' '#!/bin/bash' 'omarchy-sound battery dialog-warning' \
-  > ~/.config/omarchy/hooks/battery-low.d/hev-sound.hook
-# Update cue is deferred until omarchy-update exits (past mise/AUR) — see
-# “Exactly how each cue fires” above. Copy the theme’s hook, or:
-cat > ~/.config/omarchy/hooks/post-update.d/hev-sound.hook <<'EOF'
-#!/bin/bash
-# Omarchy fires post-update mid-pipeline (after system pkgs + migrations, before
-# AUR / mise). Capture the omarchy-update PID synchronously, then detach a
-# waiter in a new session so we play when that process exits (near
-# press-any-key) — not mid-mise, and not lost to SIGHUP/races.
-LOG="${XDG_STATE_HOME:-$HOME/.local/state}/omarchy/hev-update-sound.log"
-SOUND="${HOME}/.local/bin/omarchy-sound"
-mkdir -p "$(dirname "$LOG")"
-
-find_update_pid() {
-  local pid=$PPID
-  local -a args
-  local a
-  while [[ -n $pid && $pid -gt 1 ]]; do
-    args=()
-    mapfile -d '' -t args <"/proc/$pid/cmdline" 2>/dev/null || return 1
-    for a in "${args[@]}"; do
-      # Exact argv token — not omarchy-update-lock / -mise / log paths.
-      if [[ $a == omarchy-update || $a == */omarchy-update ]]; then
-        printf '%s\n' "$pid"
-        return 0
-      fi
-    done
-    pid=$(awk '{print $4}' "/proc/$pid/stat" 2>/dev/null) || return 1
-    pid=${pid// /}
-  done
-  return 1
-}
-
-UPDATE_PID=$(find_update_pid || true)
-echo "$(date -Is) hook pid=$$ update_pid=${UPDATE_PID:-none}" >>"$LOG"
-
-setsid -f bash -c "
-trap '' HUP INT TERM
-LOG=$(printf %q "$LOG")
-SOUND=$(printf %q "$SOUND")
-UPDATE_PID=$(printf %q "$UPDATE_PID")
-exec >>\"\$LOG\" 2>&1
-echo \"\$(date -Is) waiter alive update_pid=\${UPDATE_PID:-none} pid=\$\$\"
-if [[ -n \${UPDATE_PID} ]]; then
-  while kill -0 \"\$UPDATE_PID\" 2>/dev/null; do sleep 0.4; done
-  echo \"\$(date -Is) update exited; playing\"
-else
-  echo \"\$(date -Is) no update parent; playing now\"
-fi
-if [[ -x \$SOUND ]]; then
-  \"\$SOUND\" update complete
-  echo \"\$(date -Is) play done\"
-else
-  echo \"\$(date -Is) missing \$SOUND\"
-fi
-"
-EOF
-chmod +x ~/.config/omarchy/hooks/*/hev-sound.hook
+~/.config/omarchy/themes/hev-suit/install-sounds.sh
+# tear down dispatcher + hev-sound hooks (theme + Lock Sound plugin untouched):
+~/.config/omarchy/themes/hev-suit/uninstall-sounds.sh
 ```
 
-**3. Denied — [Lock Sound](https://github.com/AlxWolfenstein97/omarchy-lock-sound)**
+`install-sounds.sh` drops `~/.local/bin/omarchy-sound` and the three
+`hev-sound.hook` files under `hooks/{post-boot,battery-low,post-update}.d/`.
+`uninstall-sounds.sh` removes those same paths (and the optional update-sound
+debug log). Sources live in `sound-wiring/` if you want to inspect them.
 
-Stock lock cannot be patched in place. This plugin is the supported clone,
-published so you don’t hand-edit `Service.qml`:
+**Denied** still needs
+[Lock Sound](https://github.com/AlxWolfenstein97/omarchy-lock-sound) — stock
+lock has no failure hook:
 
 ```bash
 omarchy plugin add https://github.com/AlxWolfenstein97/omarchy-lock-sound.git --enable
 omarchy-restart-shell
+# later:
+omarchy plugin remove io.github.alxwolfenstein97.lock-sound --yes
 ```
 
-It enables Lock Sound and disables `omarchy.lock`. Remove with
-`omarchy plugin remove io.github.alxwolfenstein97.lock-sound --yes`.
-
-Smoke-test anytime: `omarchy-sound login` / `battery` / `update` / `denied`.
+Smoke-test: `omarchy-sound login` / `battery` / `update` / `denied`.
 
 Hook / dispatcher pattern inspired by
 [Shiver-dev01/omarchy-black-mesa-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-theme)
-(they document the wiring; this pack ships the clips).
+(they document the wiring; this pack ships the clips + install/uninstall).
 
 ## Extend further with plugins
 
