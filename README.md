@@ -1,12 +1,16 @@
 # HEV Suit — Omarchy theme
 
 Incident report, unclassified: Freeman never clocked in for the usual Tuesday.
-Somewhere between the tram ride and the HEV bay he found a compositor called
-**Hyprland**, an opinionated Arch called **Omarchy**, and a terminal that
-answered in hazard orange. The resonance cascade still happened — of course it
-did — but the desktop held. Facility black. Blueprint cyan on the monitors.
-Active Hypr borders run a 45° **HEV-orange → blueprint-cyan** gradient
-(same dual-accent trick as the asphalt night pack). Same story, better rice.
+Somewhere between the tram ride and the HEV bay the facility stood up a
+compositor called **Hyprland**, an opinionated Arch called **Omarchy**, and a
+terminal that answered in hazard orange. The resonance cascade still happened
+— of course it did — but the desktop held. Facility black. Blueprint cyan on
+the monitors. Active Hypr borders run a 45° **HEV-orange → blueprint-cyan**
+gradient (same dual-accent trick as the asphalt night pack). And the suit
+got into the system: boot, low power, updates, wrong unlock — a lite patch of
+GothLady HEV lines on the desktop. Full voice still lives in *Black Mesa* for
+anyone who owns the game; some workshop notes say they could listen to her
+all day. Fair. Same story, better rice.
 
 Orange-suit theme for [Omarchy](https://omarchy.org/). Inspired by the look of
 *Black Mesa* / *Half-Life* — **not affiliated with Valve or Crowbar Collective**
