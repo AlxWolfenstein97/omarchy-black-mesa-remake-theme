@@ -71,6 +71,7 @@ Cycle wallpapers with `omarchy theme bg next`.
 |-------|------|
 | `colors.toml` | Palette (the real theme) |
 | `backgrounds/` | Wallpapers |
+| `sounds/` | Four GothLady HEV cues — optional wiring, see [How HEV system sounds work](#how-hev-system-sounds-work) |
 | `unlock.png` / `preview-unlock.png` | Plymouth unlock + picker mockup |
 | `preview.png` | Theme switcher preview |
 | `icon.txt` / `logo.txt` (+ `about.txt` / `screensaver.txt`) | About & screensaver **ASCII** branding |
@@ -101,6 +102,101 @@ good path.
 ### Unlock
 
 Style → Unlock → pick this theme (`unlock.png` / `preview-unlock.png`).
+
+## How HEV system sounds work
+
+Extra for **this** theme — same spirit as the plugin extenders below: palette +
+art ship by default; the VO is optional desktop wiring you opt into once.
+Other themes stay quiet because the dispatcher only plays files from the
+*current* theme’s `sounds/` folder.
+
+Lovingly voiced by **Kerensa “Goth_Lady1987” Hayes**, chopped / shipped here by
+**Alex_Wolfenstein97**. Full pack on Steam Workshop:
+[GothLady’s HEV Suit Voice](https://steamcommunity.com/sharedfiles/filedetails/?id=2877289836).
+This theme is a **lite** pack — four desktop cues. There’s a whole lot more of
+her if you own *Black Mesa*. If you don’t… why are you even here?
+
+| File | Line | Trigger |
+|------|------|---------|
+| `sounds/login.ogg` | Welcome + vitals OK (welcome bits trimmed) | Desktop start |
+| `sounds/battery.ogg` | Warning: vital signs critical | Low battery (≤10%, discharging) |
+| `sounds/update.ogg` | Power restored | End of `omarchy update` |
+| `sounds/denied.ogg` | Warning: biohazard detected | Wrong password on the lock screen |
+
+Levels are the edited export as-is (mean roughly **−15 to −18 dB**) — clear
+over quiet lofi / NCS / Omarchy Radio, not fighting a cliamp stream at 0 dB,
+and nowhere near the clipped in-game original HEV blast.
+
+### Exactly how each cue fires
+
+1. **Login** — Hyprland’s stock autostart runs
+   `sleep 2 && omarchy-hook post-boot` after the desktop comes up. That hook
+   directory runs `omarchy-sound login`, which `paplay`s
+   `~/.local/state/omarchy/current/theme/sounds/login.ogg` if present.
+2. **Battery** — Omarchy’s battery service polls every 30s (and on AC changes).
+   When you’re on battery, discharging, at or below **10%**, and haven’t been
+   notified yet this discharge cycle, it runs `omarchy-battery-low`, which
+   fires the `battery-low` hooks → `omarchy-sound battery`.
+3. **Update** — `omarchy update` finishes system packages + migrations, then
+   calls `omarchy-hook post-update` → `omarchy-sound update`.
+4. **Denied** — stock lock has **no** hook. Clone `omarchy.lock`, add
+   `Quickshell.execDetached(["omarchy-sound", "denied"])` inside
+   `handlePasswordFailure()` in that clone’s `Service.qml`, restart the shell.
+   Wrong password → biohazard.
+
+The dispatcher (`~/.local/bin/omarchy-sound`) is theme-agnostic: switch away
+from Hev Suit and the same hooks become no-ops (missing file → exit 0). Switch
+back and the cues return. Nothing to unpick.
+
+### Wire it once
+
+**1. Dispatcher**
+
+```bash
+mkdir -p ~/.local/bin
+cat > ~/.local/bin/omarchy-sound <<'EOF'
+#!/bin/bash
+# omarchy-sound <name> [freedesktop-fallback]
+NAME=$1; FALLBACK=$2
+[[ -n $NAME ]] || exit 0
+THEME_SOUND="$HOME/.local/state/omarchy/current/theme/sounds/$NAME.ogg"
+FALLBACK_SOUND="/usr/share/sounds/freedesktop/stereo/$FALLBACK.oga"
+if [[ -f $THEME_SOUND ]]; then SOUND=$THEME_SOUND
+elif [[ -n $FALLBACK && -f $FALLBACK_SOUND ]]; then SOUND=$FALLBACK_SOUND
+else exit 0; fi
+setsid paplay "$SOUND" >/dev/null 2>&1 &
+exit 0
+EOF
+chmod +x ~/.local/bin/omarchy-sound
+```
+
+**2. Hooks**
+
+```bash
+mkdir -p ~/.config/omarchy/hooks/{post-boot,battery-low,post-update}.d
+printf '%s\n' '#!/bin/bash' 'omarchy-sound login' \
+  > ~/.config/omarchy/hooks/post-boot.d/hev-sound.hook
+printf '%s\n' '#!/bin/bash' 'omarchy-sound battery dialog-warning' \
+  > ~/.config/omarchy/hooks/battery-low.d/hev-sound.hook
+printf '%s\n' '#!/bin/bash' 'omarchy-sound update complete' \
+  > ~/.config/omarchy/hooks/post-update.d/hev-sound.hook
+chmod +x ~/.config/omarchy/hooks/*/hev-sound.hook
+```
+
+**3. Denied (lock clone)**
+
+```bash
+omarchy plugin clone omarchy.lock
+# Edit ~/.config/omarchy/plugins/<you>.lock/Service.qml → handlePasswordFailure():
+#   Quickshell.execDetached(["omarchy-sound", "denied"])
+omarchy-restart-shell
+```
+
+Smoke-test anytime: `omarchy-sound login` / `battery` / `update` / `denied`.
+
+Hook / dispatcher pattern inspired by
+[Shiver-dev01/omarchy-black-mesa-theme](https://github.com/Shiver-dev01/omarchy-black-mesa-theme)
+(they document the wiring; this pack ships the clips).
 
 ## Extend further with plugins
 
@@ -197,6 +293,11 @@ this theme.)
   **Crowbar Collective**’s *Black Mesa* branding and marketing. **Not affiliated
   with, endorsed by, or sponsored by Valve or Crowbar Collective.** Just public
   pixels arranged into an Omarchy theme — no money, no official product.
+- System VO from
+  [GothLady’s HEV Suit Voice](https://steamcommunity.com/sharedfiles/filedetails/?id=2877289836)
+  — same credit as on Steam: voiced by **Kerensa “Goth_Lady1987” Hayes**,
+  edited by **Alex_Wolfenstein97**. Not Valve / Crowbar audio. Theme = lite
+  pack; the Workshop item is the full suit if you own *Black Mesa*.
 - If Valve or Crowbar Collective hates this existing, they can say so and I’ll
   deal with the repo accordingly.
 
@@ -204,7 +305,15 @@ this theme.)
 
 Do whatever you want with this theme pack unless Valve, Crowbar Collective (or
 the law) says otherwise. Fork it, recolor it, ship it in a rice. No warranty —
-it’s wallpaper and hex codes.
+it’s wallpaper, hex codes, and a handful of short voice cues.
+
+The four `sounds/*.ogg` clips are chopped from
+[GothLady’s HEV Suit Voice](https://steamcommunity.com/sharedfiles/filedetails/?id=2877289836).
+I’ve obtained permission from Kerensa (“Goth_Lady1987”) Hayes to chop, ship, and
+use these lines outside our usual Steam Workshop release of that pack — including
+shipping them in this Omarchy theme. That permission covers this desktop use; it
+doesn’t turn the VO into public-domain or grant rights to Valve / Crowbar
+material.
 
 Optional rider, from somewhere near Sector C: if you had fun with this theme,
 you are hereby *contractually obligated* (in the soft, mute-scientist sense of
