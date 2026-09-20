@@ -285,6 +285,18 @@ one shot (skips Y/n):
 (Chroma alone: same script, or
 `~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/install.sh --yes`.)
 
+**Full wipe — one shot out.** Themes don’t custom-uninstall these plugins.
+Same family, reverse direction: teardown hooks/menus/paint, then
+`omarchy plugin remove` for each installed extender (skips optional pkg Y/n;
+shared deps like pillow stay installed):
+
+```bash
+~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/wipe-all-family.sh
+```
+
+(Privileged Limine/VT/FONT/root teardown may still ask for a password once
+per plugin that needs it.)
+
 ### Already solved elsewhere (gladly)
 
 - **[Omacord](https://github.com/ASwenia/omacord)** — Vesktop / Vencord Discord
