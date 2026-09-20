@@ -286,9 +286,16 @@ one shot (skips Y/n):
 `~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/install.sh --yes`.)
 
 **Full wipe — one shot out.** Themes don’t custom-uninstall these plugins.
-Same family, reverse direction: teardown hooks/menus/paint, then
-`omarchy plugin remove` for each installed extender (skips optional pkg Y/n;
-shared deps like pillow stay installed):
+Each extender has the same easy out as `install.sh --yes` (teardown +
+`plugin remove`; skips optional pkg Y/n; shared deps like pillow stay):
+
+```bash
+~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/uninstall.sh --yes
+~/.config/omarchy/plugins/io.github.alxwolfenstein97.omacursor/uninstall.sh --yes
+# …same path pattern for omaobs / omahud / omaboot / omavt / omatty
+```
+
+Or wipe every installed extender in the family at once:
 
 ```bash
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/wipe-all-family.sh
