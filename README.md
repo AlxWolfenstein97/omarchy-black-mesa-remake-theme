@@ -120,7 +120,7 @@ her if you own *Black Mesa*. If you don’t… why are you even here?
 |------|------|---------|
 | `sounds/login.ogg` | Welcome + vitals OK (welcome bits trimmed) | Desktop start |
 | `sounds/battery.ogg` | Warning: vital signs critical | Low battery (≤10%, discharging) |
-| `sounds/update.ogg` | Power restored | End of `omarchy update` |
+| `sounds/update.ogg` | Power restored | After `omarchy update` finishes (see below) |
 | `sounds/denied.ogg` | Warning: biohazard detected | Wrong password on the lock screen |
 
 Levels are the edited export as-is (mean roughly **−15 to −18 dB**) — clear
@@ -137,8 +137,21 @@ and nowhere near the clipped in-game original HEV blast.
    When you’re on battery, discharging, at or below **10%**, and haven’t been
    notified yet this discharge cycle, it runs `omarchy-battery-low`, which
    fires the `battery-low` hooks → `omarchy-sound battery`.
-3. **Update** — `omarchy update` finishes system packages + migrations, then
-   calls `omarchy-hook post-update` → `omarchy-sound update`.
+3. **Update** — stock Omarchy calls `omarchy-hook post-update` **mid-pipeline**:
+   after system packages + migrations, **before** AUR, mise, and orphan
+   cleanup. Official docs say the same (“after system packages and
+   migrations”). The floating “Done — press any key” prompt
+   (`omarchy-show-done`) only appears **after** the whole `omarchy-update`
+   process exits — much later. Snapshot creation still runs up front even on
+   a no-op / “joke” update (same reason Omarchy always snapshots before
+   touching pkgs). There is no later hook we can use.
+
+   So this theme’s `hev-sound.hook` does **not** play immediately. It finds
+   the parent `omarchy-update` PID, returns, lets AUR/mise finish, then plays
+   `sounds/update.ogg` when that process exits — roughly as the press-any-key
+   screen shows. Manual `omarchy hook post-update` (no update parent) falls
+   back to playing right away. Empty updates still cue: Omarchy always runs
+   the hook after confirm, same as the snapshot.
 4. **Denied** — stock lock has **no** hook. Clone `omarchy.lock`, add
    `Quickshell.execDetached(["omarchy-sound", "denied"])` inside
    `handlePasswordFailure()` in that clone’s `Service.qml`, restart the shell.
@@ -178,8 +191,29 @@ printf '%s\n' '#!/bin/bash' 'omarchy-sound login' \
   > ~/.config/omarchy/hooks/post-boot.d/hev-sound.hook
 printf '%s\n' '#!/bin/bash' 'omarchy-sound battery dialog-warning' \
   > ~/.config/omarchy/hooks/battery-low.d/hev-sound.hook
-printf '%s\n' '#!/bin/bash' 'omarchy-sound update complete' \
-  > ~/.config/omarchy/hooks/post-update.d/hev-sound.hook
+# Update cue is deferred until omarchy-update exits (past mise/AUR) — see
+# “Exactly how each cue fires” above. Copy the theme’s hook, or:
+cat > ~/.config/omarchy/hooks/post-update.d/hev-sound.hook <<'EOF'
+#!/bin/bash
+(
+  pid=$PPID
+  update_pid=
+  while [[ -n $pid && $pid -gt 1 ]]; do
+    cmdline=$(tr '\0' ' ' <"/proc/$pid/cmdline" 2>/dev/null) || break
+    if [[ $cmdline =~ (^|[[:space:]])(/usr/bin/)?omarchy-update([[:space:]]|$) ]]; then
+      update_pid=$pid
+      break
+    fi
+    pid=$(awk '{print $4}' "/proc/$pid/stat" 2>/dev/null) || break
+    pid=${pid// /}
+  done
+  if [[ -n $update_pid ]]; then
+    while kill -0 "$update_pid" 2>/dev/null; do sleep 0.4; done
+  fi
+  omarchy-sound update complete
+) >/dev/null 2>&1 &
+disown
+EOF
 chmod +x ~/.config/omarchy/hooks/*/hev-sound.hook
 ```
 
