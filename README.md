@@ -146,12 +146,16 @@ and nowhere near the clipped in-game original HEV blast.
    a no-op / “joke” update (same reason Omarchy always snapshots before
    touching pkgs). There is no later hook we can use.
 
-   So this theme’s `hev-sound.hook` does **not** play immediately. It finds
-   the parent `omarchy-update` PID, returns, lets AUR/mise finish, then plays
-   `sounds/update.ogg` when that process exits — roughly as the press-any-key
-   screen shows. Manual `omarchy hook post-update` (no update parent) falls
-   back to playing right away. Empty updates still cue: Omarchy always runs
-   the hook after confirm, same as the snapshot.
+   So this theme’s `hev-sound.hook` does **not** play immediately. It resolves
+   the parent `omarchy-update` PID **before** returning (walking `/proc` while
+   those parents still exist), then `setsid`s a waiter that plays
+   `sounds/update.ogg` when that PID exits — roughly as press-any-key shows,
+   after AUR/mise. An earlier “background then walk `$PPID`” approach raced:
+   the hook shell could vanish before the walk finished, so the cue never
+   armed. Manual `omarchy hook post-update` (no update parent) falls back to
+   playing right away. Empty updates still cue: Omarchy always runs the hook
+   after confirm, same as the snapshot. Debug trail:
+   `~/.local/state/omarchy/hev-update-sound.log`.
 4. **Denied** — stock lock has **no** hook. Clone `omarchy.lock`, add
    `Quickshell.execDetached(["omarchy-sound", "denied"])` inside
    `handlePasswordFailure()` in that clone’s `Service.qml`, restart the shell.
@@ -195,24 +199,57 @@ printf '%s\n' '#!/bin/bash' 'omarchy-sound battery dialog-warning' \
 # “Exactly how each cue fires” above. Copy the theme’s hook, or:
 cat > ~/.config/omarchy/hooks/post-update.d/hev-sound.hook <<'EOF'
 #!/bin/bash
-(
-  pid=$PPID
-  update_pid=
+# Omarchy fires post-update mid-pipeline (after system pkgs + migrations, before
+# AUR / mise). Capture the omarchy-update PID synchronously, then detach a
+# waiter in a new session so we play when that process exits (near
+# press-any-key) — not mid-mise, and not lost to SIGHUP/races.
+LOG="${XDG_STATE_HOME:-$HOME/.local/state}/omarchy/hev-update-sound.log"
+SOUND="${HOME}/.local/bin/omarchy-sound"
+mkdir -p "$(dirname "$LOG")"
+
+find_update_pid() {
+  local pid=$PPID
+  local -a args
+  local a
   while [[ -n $pid && $pid -gt 1 ]]; do
-    cmdline=$(tr '\0' ' ' <"/proc/$pid/cmdline" 2>/dev/null) || break
-    if [[ $cmdline =~ (^|[[:space:]])(/usr/bin/)?omarchy-update([[:space:]]|$) ]]; then
-      update_pid=$pid
-      break
-    fi
-    pid=$(awk '{print $4}' "/proc/$pid/stat" 2>/dev/null) || break
+    args=()
+    mapfile -d '' -t args <"/proc/$pid/cmdline" 2>/dev/null || return 1
+    for a in "${args[@]}"; do
+      # Exact argv token — not omarchy-update-lock / -mise / log paths.
+      if [[ $a == omarchy-update || $a == */omarchy-update ]]; then
+        printf '%s\n' "$pid"
+        return 0
+      fi
+    done
+    pid=$(awk '{print $4}' "/proc/$pid/stat" 2>/dev/null) || return 1
     pid=${pid// /}
   done
-  if [[ -n $update_pid ]]; then
-    while kill -0 "$update_pid" 2>/dev/null; do sleep 0.4; done
-  fi
-  omarchy-sound update complete
-) >/dev/null 2>&1 &
-disown
+  return 1
+}
+
+UPDATE_PID=$(find_update_pid || true)
+echo "$(date -Is) hook pid=$$ update_pid=${UPDATE_PID:-none}" >>"$LOG"
+
+setsid -f bash -c "
+trap '' HUP INT TERM
+LOG=$(printf %q "$LOG")
+SOUND=$(printf %q "$SOUND")
+UPDATE_PID=$(printf %q "$UPDATE_PID")
+exec >>\"\$LOG\" 2>&1
+echo \"\$(date -Is) waiter alive update_pid=\${UPDATE_PID:-none} pid=\$\$\"
+if [[ -n \${UPDATE_PID} ]]; then
+  while kill -0 \"\$UPDATE_PID\" 2>/dev/null; do sleep 0.4; done
+  echo \"\$(date -Is) update exited; playing\"
+else
+  echo \"\$(date -Is) no update parent; playing now\"
+fi
+if [[ -x \$SOUND ]]; then
+  \"\$SOUND\" update complete
+  echo \"\$(date -Is) play done\"
+else
+  echo \"\$(date -Is) missing \$SOUND\"
+fi
+"
 EOF
 chmod +x ~/.config/omarchy/hooks/*/hev-sound.hook
 ```
