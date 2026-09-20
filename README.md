@@ -156,10 +156,10 @@ and nowhere near the clipped in-game original HEV blast.
    playing right away. Empty updates still cue: Omarchy always runs the hook
    after confirm, same as the snapshot. Debug trail:
    `~/.local/state/omarchy/hev-update-sound.log`.
-4. **Denied** — stock lock has **no** hook. Clone `omarchy.lock`, add
-   `Quickshell.execDetached(["omarchy-sound", "denied"])` inside
-   `handlePasswordFailure()` in that clone’s `Service.qml`, restart the shell.
-   Wrong password → biohazard.
+4. **Denied** — stock lock has **no** hook. Install
+   [Lock Sound](https://github.com/AlxWolfenstein97/omarchy-lock-sound) (a
+   published `omarchy.lock` clone with one extra line). Wrong password →
+   `omarchy-sound denied` → biohazard while this theme is current.
 
 The dispatcher (`~/.local/bin/omarchy-sound`) is theme-agnostic: switch away
 from Hev Suit and the same hooks become no-ops (missing file → exit 0). Switch
@@ -254,14 +254,18 @@ EOF
 chmod +x ~/.config/omarchy/hooks/*/hev-sound.hook
 ```
 
-**3. Denied (lock clone)**
+**3. Denied — [Lock Sound](https://github.com/AlxWolfenstein97/omarchy-lock-sound)**
+
+Stock lock cannot be patched in place. This plugin is the supported clone,
+published so you don’t hand-edit `Service.qml`:
 
 ```bash
-omarchy plugin clone omarchy.lock
-# Edit ~/.config/omarchy/plugins/<you>.lock/Service.qml → handlePasswordFailure():
-#   Quickshell.execDetached(["omarchy-sound", "denied"])
+omarchy plugin add https://github.com/AlxWolfenstein97/omarchy-lock-sound.git --enable
 omarchy-restart-shell
 ```
+
+It enables Lock Sound and disables `omarchy.lock`. Remove with
+`omarchy plugin remove io.github.alxwolfenstein97.lock-sound --yes`.
 
 Smoke-test anytime: `omarchy-sound login` / `battery` / `update` / `denied`.
 
@@ -289,6 +293,14 @@ extenders that carry the same colours farther across the desktop. Build one good
 theme, build good extenders, build more good themes that work as a base *and*
 with the extenders — then circle back. Same workshop energy: you’re not modding
 a game, you’re modding the *system*.
+
+### This theme’s audio (denied)
+
+- **[Lock Sound](https://github.com/AlxWolfenstein97/omarchy-lock-sound)** —
+  published `omarchy.lock` clone that plays `sounds/denied.ogg` on wrong
+  password via `omarchy-sound`. Required for the biohazard cue; login /
+  battery / update only need the hooks above.  
+  `omarchy plugin add https://github.com/AlxWolfenstein97/omarchy-lock-sound.git --enable`
 
 ### The big sweep
 
