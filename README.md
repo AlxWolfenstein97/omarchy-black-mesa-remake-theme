@@ -239,6 +239,8 @@ a game, you’re modding the *system*.
   most apps already use, not each app by name. Longer “why / where we stop”
   lives in that README.  
   `omarchy plugin add https://github.com/AlxWolfenstein97/chroma.git --enable`  
+  (Then arm theme-set — see **Not broken — one more step** under the Style
+  plugins block below, or Chroma’s **Marketplace consent** on GitHub.)  
   Craft inspiration: [Accord](https://github.com/vonsensey/accord) proved the
   Omarchy → libadwaita CSS bridge; Chroma is the extender this theme points
   people at.
@@ -267,6 +269,21 @@ omarchy plugin add https://github.com/AlxWolfenstein97/omaboot.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omavt.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omatty.git --enable
 ```
+
+**Not broken — one more step.** Marketplace / `plugin add` only drops the
+code. Style menu rows and theme-follow hooks stay **off** until you consent
+(Omarchy marketplace rule). Until then nothing visible happens in Style /
+auto-sync — that’s intentional, not a dead plugin. Read each plugin’s
+**Marketplace consent** section on GitHub, or arm everything you installed in
+one shot (skips Y/n):
+
+```bash
+# Chroma theme-set + Style rows for whatever of the family you added above
+~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/arm-all-family.sh
+```
+
+(Chroma alone: same script, or
+`~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/install.sh --yes`.)
 
 ### Already solved elsewhere (gladly)
 
