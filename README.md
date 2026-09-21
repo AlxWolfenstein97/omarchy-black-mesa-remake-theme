@@ -257,18 +257,19 @@ already keeps them in lockstep.
 | **[OmaVT](https://github.com/AlxWolfenstein97/omavt)** | Virtual console / TTY palette |
 | **[OmaTTY](https://github.com/AlxWolfenstein97/omatty)** | Console font (Terminus-first, accessibility) |
 
-**Boom-in — one paste.** Enable all seven, then arm-all (deps + Style/theme-set +
-root/SDDM/DRM, no Y/n). Omit any `plugin add` line you do not want; arm-all only
-touches what is installed. Sudo may ask once — that is the boom, not a menu.
+**Boom-in — one paste.** `--enable --yes` skips the per-plugin clone/enable
+prompts; arm-all then arms deps + Style/theme-set + root/SDDM/DRM (no Y/n).
+Omit any `plugin add` line you do not want; arm-all only touches what is
+installed. Sudo may ask once — that is the boom, not a menu.
 
 ```bash
-omarchy plugin add https://github.com/AlxWolfenstein97/chroma.git --enable
-omarchy plugin add https://github.com/AlxWolfenstein97/omaobs.git --enable
-omarchy plugin add https://github.com/AlxWolfenstein97/omacursor.git --enable
-omarchy plugin add https://github.com/AlxWolfenstein97/omahud.git --enable
-omarchy plugin add https://github.com/AlxWolfenstein97/omaboot.git --enable
-omarchy plugin add https://github.com/AlxWolfenstein97/omavt.git --enable
-omarchy plugin add https://github.com/AlxWolfenstein97/omatty.git --enable
+omarchy plugin add https://github.com/AlxWolfenstein97/chroma.git --enable --yes
+omarchy plugin add https://github.com/AlxWolfenstein97/omaobs.git --enable --yes
+omarchy plugin add https://github.com/AlxWolfenstein97/omacursor.git --enable --yes
+omarchy plugin add https://github.com/AlxWolfenstein97/omahud.git --enable --yes
+omarchy plugin add https://github.com/AlxWolfenstein97/omaboot.git --enable --yes
+omarchy plugin add https://github.com/AlxWolfenstein97/omavt.git --enable --yes
+omarchy plugin add https://github.com/AlxWolfenstein97/omatty.git --enable --yes
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/arm-all-family.sh
 ```
 
