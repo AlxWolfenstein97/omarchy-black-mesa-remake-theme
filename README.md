@@ -289,7 +289,7 @@ floaters as before).
 **Full wipe — one shot out.** Mirror of arm-all: teardown + inline Limine/VT/
 FONT/chroma-root resets (no floater Y/n) + best-effort `omarchy pkg drop` for
 what we brought + `plugin remove`. If something else still needs a package,
-pacman keeps it — fine. Interactive per-plugin uninstall.sh still floaters.
+pacman keeps it — fine. Interactive per-plugin uninstall.sh uses this TTY (no floaters); `--yes` / wipe-all skip the Y/n.
 
 ```bash
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/wipe-all-family.sh
