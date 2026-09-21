@@ -237,13 +237,9 @@ a game, you’re modding the *system*.
   libadwaita + Qt in one hook (file manager, Document Viewer, BleachBit, File
   Roller, qBittorrent, qpwgraph, …). No Style picker: it paints the toolkits
   most apps already use, not each app by name. Longer “why / where we stop”
-  lives in that README.  
-  `omarchy plugin add https://github.com/AlxWolfenstein97/chroma.git --enable`  
-  (Then arm theme-set — see **Not broken — one more step** under the Style
-  plugins block below, or Chroma’s **Marketplace consent** on GitHub.)  
-  Craft inspiration: [Accord](https://github.com/vonsensey/accord) proved the
-  Omarchy → libadwaita CSS bridge; Chroma is the extender this theme points
-  people at.
+  lives in that README. Craft inspiration:
+  [Accord](https://github.com/vonsensey/accord) proved the Omarchy → libadwaita
+  CSS bridge; Chroma is the extender this theme points people at.
 
 ### One-surface Style plugins (palette previews + apply)
 
@@ -261,51 +257,31 @@ already keeps them in lockstep.
 | **[OmaVT](https://github.com/AlxWolfenstein97/omavt)** | Virtual console / TTY palette |
 | **[OmaTTY](https://github.com/AlxWolfenstein97/omatty)** | Console font (Terminus-first, accessibility) |
 
+**Boom-in — one paste.** Enable all seven, then arm-all (deps + Style/theme-set +
+root/SDDM/DRM, no Y/n). Omit any `plugin add` line you do not want; arm-all only
+touches what is installed. Sudo may ask once — that is the boom, not a menu.
+
 ```bash
+omarchy plugin add https://github.com/AlxWolfenstein97/chroma.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omaobs.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omacursor.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omahud.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omaboot.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omavt.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omatty.git --enable
-```
-
-**Not broken — one more step.** `plugin add --enable` only drops code + starts
-the quiet service (restores already-armed wiring — no Style consent yet).
-Workshop piece-meal is one paste per plugin (`add` + `install.sh`, asks [Y/n]).
-Boom-in: add the ones you want, then arm-all once (deps + Style/theme-set +
-root/SDDM/DRM, skips Y/n — optional shortcut, interactive still exists).
-
-```bash
-# Example piece-meal (one plugin):
-omarchy plugin add https://github.com/AlxWolfenstein97/omacursor.git --enable
-~/.config/omarchy/plugins/io.github.alxwolfenstein97.omacursor/install.sh
-
-# True one-shot IN for whatever you already `plugin add`’d:
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/arm-all-family.sh
 ```
 
-(Chroma alone: same family script, or
-`~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/install.sh --yes --with-root`.)
-
-**Full wipe — one shot out.** Mirror of arm-all: teardown + inline Limine/VT/
-FONT/chroma-root resets (no floater Y/n) + best-effort `omarchy pkg drop` for
-what we brought + `plugin remove`. If something else still needs a package,
-pacman keeps it — fine. Interactive per-plugin uninstall.sh prompts in that terminal (no floaters); `--yes` / wipe-all skip the Y/n.
+**Boom-out — one paste.** Mirror: teardown + pkg drop best-effort + plugin remove.
 
 ```bash
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/wipe-all-family.sh
 ```
 
-Single plugin (same `--yes` behaviour as wipe-all uses under the hood):
+**Piece-meal** (not boom): one plugin’s Workshop paste — `plugin add` + interactive
+`install.sh` (asks [Y/n]) — lives on that plugin’s GitHub README. Single-plugin
+full wipe: `…/<plugin>/uninstall.sh --yes`.
 
-```bash
-~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/uninstall.sh --yes
-~/.config/omarchy/plugins/io.github.alxwolfenstein97.omacursor/uninstall.sh --yes
-# …same path pattern for omaobs / omahud / omaboot / omavt / omatty
-```
-
-(Privileged steps may still ask for a password once — that’s the boom, not a prompt menu.)
 
 ### Already solved elsewhere (gladly)
 
