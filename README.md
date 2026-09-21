@@ -270,17 +270,16 @@ omarchy plugin add https://github.com/AlxWolfenstein97/omavt.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omatty.git --enable
 ```
 
-**Not broken — one more step.** Marketplace / `plugin add` only drops the
-code. Style menu rows and theme-follow hooks stay **off** until you consent
-(Omarchy marketplace rule). Until then nothing visible happens in Style /
-auto-sync — that’s intentional, not a dead plugin. Read each plugin’s
-**Marketplace consent** section on GitHub, or arm everything you installed in
-one shot (skips Y/n):
+**Not broken — one more step.** `plugin add --enable` clones the repo and
+turns on the shell service. That service runs `install.sh --quiet`, which only
+restores already-armed wiring — **no package floaters, no Style consent**.
+Hooks stay **off** until you consent (marketplace rule). Boom-in is add the
+plugins you want, then arm once (deps + Style/theme-set + root/SDDM/DRM,
+skips Y/n). Piece-meal: run each `install.sh` interactively instead (TTY /
+floaters as before).
 
 ```bash
 # True one-shot IN for whatever you already `plugin add`’d:
-# deps once, Style/theme-set arm, chroma --with-root, omacursor --with-sddm,
-# omatty --with-drm-reapply. Interactive per-plugin install.sh still exists.
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/arm-all-family.sh
 ```
 
