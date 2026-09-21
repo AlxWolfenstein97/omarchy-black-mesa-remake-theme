@@ -270,15 +270,17 @@ omarchy plugin add https://github.com/AlxWolfenstein97/omavt.git --enable
 omarchy plugin add https://github.com/AlxWolfenstein97/omatty.git --enable
 ```
 
-**Not broken — one more step.** `plugin add --enable` clones the repo and
-turns on the shell service. That service runs `install.sh --quiet`, which only
-restores already-armed wiring — **no package floaters, no Style consent**.
-Hooks stay **off** until you consent (marketplace rule). Boom-in is add the
-plugins you want, then arm once (deps + Style/theme-set + root/SDDM/DRM,
-skips Y/n). Piece-meal: run each `install.sh` interactively instead (TTY /
-floaters as before).
+**Not broken — one more step.** `plugin add --enable` only drops code + starts
+the quiet service (restores already-armed wiring — no Style consent yet).
+Workshop piece-meal is one paste per plugin (`add` + `install.sh`, asks [Y/n]).
+Boom-in: add the ones you want, then arm-all once (deps + Style/theme-set +
+root/SDDM/DRM, skips Y/n — optional shortcut, interactive still exists).
 
 ```bash
+# Example piece-meal (one plugin):
+omarchy plugin add https://github.com/AlxWolfenstein97/omacursor.git --enable
+~/.config/omarchy/plugins/io.github.alxwolfenstein97.omacursor/install.sh
+
 # True one-shot IN for whatever you already `plugin add`’d:
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/arm-all-family.sh
 ```
