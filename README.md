@@ -278,18 +278,25 @@ auto-sync — that’s intentional, not a dead plugin. Read each plugin’s
 one shot (skips Y/n):
 
 ```bash
-# Chroma theme-set + Style rows for whatever of the family you added above
+# True one-shot IN for whatever you already `plugin add`’d:
+# deps once, Style/theme-set arm, chroma --with-root, omacursor --with-sddm,
+# omatty --with-drm-reapply. Interactive per-plugin install.sh still exists.
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/arm-all-family.sh
 ```
 
-(Chroma alone: same script, or
-`~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/install.sh --yes`.)
+(Chroma alone: same family script, or
+`~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/install.sh --yes --with-root`.)
 
-**Full wipe — one shot out.** Themes don’t custom-uninstall these plugins.
-Each extender has the same easy out as `install.sh --yes`: teardown +
-`plugin remove`, and **`--yes` tries to drop the packages that plugin may
-have pulled** (`omarchy pkg drop`). If something else still needs them,
-pacman keeps them — that’s fine, same as interactive Y/n when a drop fails.
+**Full wipe — one shot out.** Mirror of arm-all: teardown + inline Limine/VT/
+FONT/chroma-root resets (no floater Y/n) + best-effort `omarchy pkg drop` for
+what we brought + `plugin remove`. If something else still needs a package,
+pacman keeps it — fine. Interactive per-plugin uninstall.sh still floaters.
+
+```bash
+~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/wipe-all-family.sh
+```
+
+Single plugin (same `--yes` behaviour as wipe-all uses under the hood):
 
 ```bash
 ~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/uninstall.sh --yes
@@ -297,15 +304,7 @@ pacman keeps them — that’s fine, same as interactive Y/n when a drop fails.
 # …same path pattern for omaobs / omahud / omaboot / omavt / omatty
 ```
 
-Or wipe every installed extender in the family at once (plugins + a final
-shared-dep sweep for pillow / numpy / adw-gtk-theme / terminus-font):
-
-```bash
-~/.config/omarchy/plugins/io.github.alxwolfenstein97.chroma/tools/wipe-all-family.sh
-```
-
-(Privileged Limine/VT/FONT/root teardown may still ask for a password once
-per plugin that needs it.)
+(Privileged steps may still ask for a password once — that’s the boom, not a prompt menu.)
 
 ### Already solved elsewhere (gladly)
 
