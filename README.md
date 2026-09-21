@@ -154,11 +154,9 @@ and nowhere near the clipped in-game original HEV blast.
    the parent `omarchy-update` PID **before** returning (walking `/proc` while
    those parents still exist), then `setsid`s a waiter that plays
    `sounds/update.ogg` when that PID exits — roughly as press-any-key shows,
-   after AUR/mise. An earlier “background then walk `$PPID`” approach raced:
-   the hook shell could vanish before the walk finished, so the cue never
-   armed. Manual `omarchy hook post-update` (no update parent) falls back to
-   playing right away. Empty updates still cue: Omarchy always runs the hook
-   after confirm, same as the snapshot. Debug trail:
+   after AUR/mise. Manual `omarchy hook post-update` (no update parent) falls
+   back to playing right away. Empty updates still cue: Omarchy always runs
+   the hook after confirm, same as the snapshot. Debug trail:
    `~/.local/state/omarchy/hev-update-sound.log`.
 4. **Denied** — stock lock has **no** hook. Install
    [Lock Sound](https://github.com/AlxWolfenstein97/omarchy-lock-sound) (a
@@ -252,7 +250,7 @@ already keeps them in lockstep.
 |--------|----------------|
 | **[OmaOBS](https://github.com/AlxWolfenstein97/omaobs)** | OBS Studio (real Yami `Omarchy.ovt`) |
 | **[OmaCursor](https://github.com/AlxWolfenstein97/omacursor)** | Pointer / Adwaita XCursor recolor (+ optional SDDM) |
-| **[OmaHud](https://github.com/AlxWolfenstein97/omahud)** | MangoHud colours only — live in-game retint; Goverlay keeps metrics/layout (replaces the old full-file `.tpl`) |
+| **[OmaHud](https://github.com/AlxWolfenstein97/omahud)** | MangoHud colours only — live in-game retint; Goverlay keeps metrics/layout |
 | **[OmaBoot](https://github.com/AlxWolfenstein97/omaboot)** | Limine boot menu colours |
 | **[OmaVT](https://github.com/AlxWolfenstein97/omavt)** | Virtual console / TTY palette |
 | **[OmaTTY](https://github.com/AlxWolfenstein97/omatty)** | Console font (Terminus-first, accessibility) |
