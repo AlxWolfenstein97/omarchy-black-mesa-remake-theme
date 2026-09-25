@@ -44,7 +44,7 @@ else
   echo \"\$(date -Is) no update parent; playing now\"
 fi
 if [[ -x \$SOUND ]]; then
-  \"\$SOUND\" update complete
+  \"\$SOUND\" update
   echo \"\$(date -Is) play done\"
 else
   echo \"\$(date -Is) missing \$SOUND\"

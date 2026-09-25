@@ -1,17 +1,10 @@
 #!/bin/bash
-# omarchy-sound <name> [freedesktop-fallback]
+# omarchy-sound <name>
 # Plays ~/.local/state/omarchy/current/theme/sounds/<name>.ogg when present.
+# No theme file → silence (no freedesktop fallback).
 NAME=$1
-FALLBACK=$2
 [[ -n $NAME ]] || exit 0
 THEME_SOUND="$HOME/.local/state/omarchy/current/theme/sounds/$NAME.ogg"
-FALLBACK_SOUND="/usr/share/sounds/freedesktop/stereo/$FALLBACK.oga"
-if [[ -f $THEME_SOUND ]]; then
-  SOUND=$THEME_SOUND
-elif [[ -n $FALLBACK && -f $FALLBACK_SOUND ]]; then
-  SOUND=$FALLBACK_SOUND
-else
-  exit 0
-fi
-setsid paplay "$SOUND" >/dev/null 2>&1 &
+[[ -f $THEME_SOUND ]] || exit 0
+setsid paplay "$THEME_SOUND" >/dev/null 2>&1 &
 exit 0

@@ -164,9 +164,9 @@ and nowhere near the clipped in-game original HEV blast.
    `omarchy-sound denied` → biohazard while this theme is current.
 
 The dispatcher (`~/.local/bin/omarchy-sound`) is theme-agnostic: switch away
-from Hev Suit and the same hooks become no-ops (missing file → exit 0). Switch
-back and the cues return. To tear the wiring down entirely (not just go quiet),
-use `uninstall-sounds.sh` below.
+from Hev Suit and the same hooks become no-ops (missing file → exit 0, no
+freedesktop ding). Switch back and the cues return. To tear the wiring down
+entirely (not just go quiet), use `uninstall-sounds.sh` below.
 
 ### Wire it once / wire it down
 
